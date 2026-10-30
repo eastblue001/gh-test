@@ -112,11 +112,38 @@ curl -H https://api.github.com/repos/<owner>/<repo>
 ![gha01](img/gha01.png)
 2. 表示されるコードを全て消して、XXコードを貼り付けて、左上の「Commit changes」をクリックします。
 ![gha02](img/gha02.png)
-3. Commit Message に「First GitHub Actions Test」と入力して「Commit changes」をクリックします。
+
+```yml
+name: Azure Login Test
+on:
+  workflow_dispatch:
+
+permissions:
+      id-token: write
+      contents: read
+      
+jobs: 
+  Azure-Login-Test:
+    runs-on: ubuntu-latest
+    steps:
+    - name: 'Az CLI login'
+      uses: azure/login@a641126d1b8aa4d1fa005f4f92df94a3a4c4c906 # v3.1.0
+      with:
+          client-id: ${{ secrets.AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+  
+    - name: 'Run Azure CLI commands'
+      run: |
+          az account show
+          az group list
+```
+
+4. Commit Message に「First GitHub Actions Test」と入力して「Commit changes」をクリックします。
 ![gha03](img/gha03.png)
-4. 画面上部から「Actions」を選択し、左ペインから「Azure Login Test」を選択し、右ペインの「Run workflow」を選択します。
+5. 画面上部から「Actions」を選択し、左ペインから「Azure Login Test」を選択し、右ペインの「Run workflow」を選択します。
 ![gha04](img/gha04.png)
-5. 実行が開始され、成功（緑色のマーク）に変わることを確認します。
+6. 実行が開始され、成功（緑色のマーク）に変わることを確認します。
 ![gha05](img/gha05.png)
-6. 「Azure Login Test」を選択し、リソースグループの一覧が表示されることを確認します。
+7. 「Azure Login Test」を選択し、リソースグループの一覧が表示されることを確認します。
 ![gha06](img/gha06.png)
